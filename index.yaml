@@ -484,6 +484,16 @@ entries:
   ziti-controller:
   - apiVersion: v2
     appVersion: 1.7.2
+    created: "2026-02-18T20:15:27.180027002Z"
+    description: Host an OpenZiti controller in Kubernetes
+    digest: d525b76f7f7f16c03a9cc3338c9ae976fb747091c7733a4e7fe11728844a87b2
+    name: ziti-controller
+    type: application
+    urls:
+    - https://github.com/openziti/helm-charts/releases/download/ziti-controller-3.1.0/ziti-controller-3.1.0.tgz
+    version: 3.1.0
+  - apiVersion: v2
+    appVersion: 1.7.2
     created: "2026-01-27T16:04:57.05390132Z"
     description: Host an OpenZiti controller in Kubernetes
     digest: 43339501dfc67f8cf1a314cb2ba59d1d631195ab2e0032fcc288172d1bc8914c
@@ -2740,6 +2750,16 @@ entries:
   ziti-router:
   - apiVersion: v2
     appVersion: 1.7.2
+    created: "2026-02-18T20:15:27.377005132Z"
+    description: Host an OpenZiti router in Kubernetes
+    digest: 00f079ffcb06d237b87b8c8cb331bea9e5ed05a0069878484db438812314122d
+    name: ziti-router
+    type: application
+    urls:
+    - https://github.com/openziti/helm-charts/releases/download/ziti-router-2.1.0/ziti-router-2.1.0.tgz
+    version: 2.1.0
+  - apiVersion: v2
+    appVersion: 1.7.2
     created: "2026-01-27T16:45:44.60533477Z"
     description: Host an OpenZiti router in Kubernetes
     digest: 83dbd5822b494cb65e76e622cecbaa31736d58f33d1ee7d1845d05b08b3fbac0
@@ -3370,6 +3390,16 @@ entries:
     version: 0.1.3
   zrok:
   - apiVersion: v2
+    appVersion: 1.1.11
+    created: "2026-02-18T20:15:27.58505805Z"
+    description: Run the zrok controller and zrok frontend components as a K8s deployment
+    digest: 5912387d6580bcbdb16ab8f543c0d5111a60284840bc48fcee8772d54a736de5
+    name: zrok
+    type: application
+    urls:
+    - https://github.com/openziti/helm-charts/releases/download/zrok-1.2.0/zrok-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
     appVersion: 1.1.10
     created: "2025-10-17T18:17:52.323021887Z"
     description: Run the zrok controller and zrok frontend components as a K8s deployment
@@ -3519,4 +3549,4 @@ entries:
     urls:
     - https://github.com/openziti/helm-charts/releases/download/zrok-0.1.16/zrok-0.1.16.tgz
     version: 0.1.16
-generated: "2026-01-27T16:45:44.605753762Z"
+generated: "2026-02-18T20:15:27.585630138Z"
