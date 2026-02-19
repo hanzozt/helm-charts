@@ -364,7 +364,7 @@ alertmanager:
   clusterPeers: []
 
 ## Monitors ConfigMap changes and POSTs to a URL
-## Ref: https://github.com/openziti-test-kitchen/configmap-reloadz
+## Ref: https://github.com/hanzozt-test-kitchen/configmap-reloadz
 ##
 configmapReload:
   webhookUrl: "http://127.0.0.1:9090/-/reload"
@@ -386,7 +386,7 @@ configmapReload:
     ## configmap-reload container image
     ##
     image:
-      repository: openziti/configmap-reloadz
+      repository: hanzozt/configmap-reloadz
       tag: latest-amd64
       pullPolicy: Always
 
@@ -424,7 +424,7 @@ configmapReload:
     ## configmap-reload container image
     ##
     image:
-      repository: openziti/configmap-reloadz
+      repository: hanzozt/configmap-reloadz
       tag: latest-amd64
       pullPolicy: Always
 
@@ -667,7 +667,7 @@ server:
   ## Prometheus server container image
   ##
   image:
-    repository: openziti/prometheuz
+    repository: hanzozt/prometheuz
     tag: 0.0.1
     pullPolicy: IfNotPresent
 

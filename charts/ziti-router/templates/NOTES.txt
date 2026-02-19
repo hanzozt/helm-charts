@@ -13,4 +13,4 @@ To learn more about the release, try:
   $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
   $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
 
-This deployment provides an OpenZiti router to accept/forward communication data within a OpenZiti Overlay network.
+This deployment provides an Hanzo ZT router to accept/forward communication data within a Hanzo ZT Overlay network.

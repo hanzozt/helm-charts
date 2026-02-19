@@ -3,11 +3,11 @@
 
 ![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.7.13](https://img.shields.io/badge/AppVersion-1.7.13-informational?style=flat-square)
 
-Dial OpenZiti services with a tunneler daemonset
+Dial Hanzo ZT services with a tunneler daemonset
 
 ## Source Code
 
-* <https://github.com/openziti/ziti-tunnel-sdk-c>
+* <https://github.com/hanzozt/ziti-tunnel-sdk-c>
 
 ## Requirements
 
@@ -18,12 +18,12 @@ Kubernetes: `>= 1.20.0-0`
 You may use this chart to reach services node-wide via your Ziti network via DNS. For example, if you create a repository or container registry Ziti service, and your cluster has no internet access, you can reach those repositories or container registries via Ziti services.
 
 **NOTE:**
-For one node kubernetes approaches like k3s, this works out-of-the-box and you can extend your coredns configuration to forward to the Ziti DNS IP, as you can see [here](https://openziti.io/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
+For one node kubernetes approaches like k3s, this works out-of-the-box and you can extend your coredns configuration to forward to the Ziti DNS IP, as you can see [here](https://hanzozt.dev/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
 For multinode kubernetes installations, where your cluster DNS could run on a different node, you need to install the [node-local-dns](https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/) feature, which secures that the Ziti DNS name will be resolved locally, on the very same tunneler, as Ziti Intercept IPs can change from node to node. See [this](https://github.com/lablabs/k8s-nodelocaldns-helm) helm chart for a possible implementation.
 
 ## How this Chart Works
 
-This chart deploys a DaemonSet running [the OpenZiti Linux tunneler](https://docs.openziti.io/docs/reference/tunnelers/linux/), in transparent node-level proxy with DNS nameserver. The chart uses container image `docker.io/openziti/ziti-edge-tunnel` which runs `ziti-edge-tunnel run`.
+This chart deploys a DaemonSet running [the Hanzo ZT Linux tunneler](https://docs.hanzozt.dev/docs/reference/tunnelers/linux/), in transparent node-level proxy with DNS nameserver. The chart uses container image `docker.io/hanzozt/ziti-edge-tunnel` which runs `ziti-edge-tunnel run`.
 
 ### Identity Storage Options
 
@@ -36,7 +36,7 @@ The chart supports two approaches for persisting the tunneler's Ziti identity:
 ## Installation
 
 ```console
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
 ```
 
 #### Identity Storage (Preferred) - Identity in PVC from Enrollment Token
@@ -44,7 +44,7 @@ helm repo add openziti https://docs.openziti.io/helm-charts/
 Provide the enrollment token as a JWT. The identity will be enrolled on first run and stored in a PVC, allowing autonomous certificate renewal. This is preferred for security because only the one-time enrollment token must be orchestrated, and the private key is generated in-place during first-run enrollment.
 
 ```console
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel --set-file zitiEnrollToken=/tmp/k8s-tunneler.jwt
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel --set-file zitiEnrollToken=/tmp/k8s-tunneler.jwt
 ```
 
 #### Identity Storage Option - Pre-Enrolled Identity in PVC
@@ -53,7 +53,7 @@ Alternatively, you may supply a pre-enrolled identity as JSON. The identity will
 
 ```console
 ziti-edge-tunnel enroll --jwt /tmp/k8s-tunneler.jwt --identity /tmp/k8s-tunneler.json
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel --set-file zitiIdentity=/tmp/k8s-tunneler.json
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel --set-file zitiIdentity=/tmp/k8s-tunneler.json
 ```
 
 #### Identity Storage Option - Existing Secret
@@ -69,13 +69,13 @@ kubectl create secret generic k8s-tunneler-identity --from-file=zitiIdentity=k8s
 Deploy with the existing secret:
 
 ```console
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel --set secret.existingSecretName=k8s-tunneler-identity
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel --set secret.existingSecretName=k8s-tunneler-identity
 ```
 
 You may specify another Kubernetes Secret resource data key name if your existing secret does not store the identity under the key `persisted-identity`:
 
 ```console
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set secret.existingSecretName=k8s-tunneler-identity \
   --set secret.keyName=myKeyName
 ```
@@ -86,22 +86,22 @@ When using PVC storage (Options 1 & 2), you can configure the PersistentVolumeCl
 
 ```console
 # Configure access mode (ReadWriteMany is default for multi-node DaemonSets)
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set-file zitiIdentity=/tmp/k8s-tunneler.json \
   --set pvc.accessMode=ReadWriteOnce
 
 # Configure storage class (uses cluster default if not set)
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set-file zitiIdentity=/tmp/k8s-tunneler.json \
   --set pvc.storageClass=nfs
 
 # Configure storage size (default is 2Gi)
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set-file zitiIdentity=/tmp/k8s-tunneler.json \
   --set pvc.storageSize=5Gi
 
 # Combine multiple PVC settings
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set-file zitiIdentity=/tmp/k8s-tunneler.json \
   --set pvc.accessMode=ReadWriteMany \
   --set pvc.storageClass=nfs \
@@ -120,12 +120,12 @@ The tunneler can integrate with systemd-resolved via D-Bus to configure the node
 
 ```console
 # Disable D-Bus integration (if causing issues)
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set-file zitiIdentity=/tmp/k8s-tunneler.json \
   --set systemDBus.enabled=false
 
 # Use different D-Bus socket path (if default doesn't exist)
-helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
+helm install ziti-edge-tunnel hanzozt/ziti-edge-tunnel \
   --set-file zitiIdentity=/tmp/k8s-tunneler.json \
   --set systemDBus.systemDBusSocketMnt=/run/dbus/system_bus_socket
 ```
@@ -141,7 +141,7 @@ helm install ziti-edge-tunnel openziti/ziti-edge-tunnel \
 
 ### Configure CoreDNS
 
-If you want to resolve your Ziti domain inside the pods, you need to customize CoreDNS. See [Official docs](https://openziti.io/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
+If you want to resolve your Ziti domain inside the pods, you need to customize CoreDNS. See [Official docs](https://hanzozt.dev/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
 
 #### Multinode example
 Customise ConfigMap that you apply for node-local-dns by appending the ziti specific domain and the upstream DNS server of ziti-edge-tunnel,
@@ -239,7 +239,7 @@ kubectl rollout restart -n kube-system deployment/coredns
 
 ### Air gapped installations
 
-For air gapped clusters, which mirrors their registries over this OpenZiti tunneler,
+For air gapped clusters, which mirrors their registries over this Hanzo ZT tunneler,
 the upgrade will present the chicken-and-egg problem, and the DaemonSet will stay
 at the *ImagePullBackOff* state for ever.
 To work this problem around, you can install the [prepull-daemonset](https://github.com/enthus-it/helm-charts/tree/main/charts/prepull-daemonset)
@@ -259,7 +259,7 @@ Once the image is present on every node, you can proceed to upgrade the tunneler
 | image.command | list | `[]` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.io"` |  |
-| image.repository | string | `"openziti/ziti-edge-tunnel"` |  |
+| image.repository | string | `"hanzozt/ziti-edge-tunnel"` |  |
 | image.tag | string | `""` |  |
 | imagePullSecrets | list | `[]` |  |
 | livenessProbe.exec.command[0] | string | `"/bin/bash"` |  |
@@ -302,7 +302,7 @@ helm upgrade {release} {source dir}
 
 ### Log Level Reference
 
-[OpenZiti tunneler](https://openziti.io/docs/reference/tunnelers/linux/linux-tunnel-options/#ziti-edge-tunnel-environment-variables) and [TLSUV](https://github.com/openziti/tlsuv) log levels are represented by integers, as follows,
+[Hanzo ZT tunneler](https://hanzozt.dev/docs/reference/tunnelers/linux/linux-tunnel-options/#ziti-edge-tunnel-environment-variables) and [TLSUV](https://github.com/hanzozt/tlsuv) log levels are represented by integers, as follows,
 
 |   *Log Level*  | *Value* |
 |:--------------:|:-------:|

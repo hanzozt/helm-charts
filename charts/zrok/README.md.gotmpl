@@ -19,10 +19,10 @@
 
 ## Requirements
 
-### Add the OpenZiti Charts Repo to Helm
+### Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 ## Minimal Example with Traefik Ingress
@@ -43,12 +43,12 @@ ZITI_PWD=$(kubectl -n "${ZITI_NAMESPACE}" get secrets "ziti-controller-admin-sec
 helm upgrade \
     --install \
     --namespace zrok --create-namespace \
-    --values https://openziti.io/helm-charts/charts/zrok/values-ingress-traefik.yaml \
+    --values https://hanzozt.io/helm-charts/charts/zrok/values-ingress-traefik.yaml \
     --set "ziti.advertisedHost=${ZITI_MGMT_API_HOST}" \
     --set "ziti.password=${ZITI_PWD}" \
     --set "dnsZone=${ZROK_DNS_ZONE}" \
     --set "controller.ingress.hosts[0]=api.${ZROK_DNS_ZONE}" \
-    zrok openziti/zrok
+    zrok hanzozt/zrok
 ```
 
 ## TLS termination with Traefik
@@ -66,7 +66,7 @@ One way to terminate TLS with Traefik is to use Cert Manager. Cert Manager will 
         --set "controller.ingress.tlsSecretName=zrok-api-tls" \
         --set "frontend.ingress.annotations=cert-manager.io/cluster-issuer: letsencrypt-prod" \
         --set "frontend.ingress.tlsSecretName=zrok-wildcard-tls" \
-        openziti/zrok
+        hanzozt/zrok
     ```
 
 ## Default account

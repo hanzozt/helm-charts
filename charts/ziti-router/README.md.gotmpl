@@ -14,10 +14,10 @@
 
 {{ template "chart.requirementsSection" . }}
 
-## Add the OpenZiti Charts Repo to Helm
+## Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 ## Public Router
@@ -29,15 +29,15 @@ The default configuration listens for incoming edge connections and router links
 ziti edge create edge-router "router1" \
   --tunneler-enabled --jwt-output-file /tmp/router1.jwt
 
-# subscribe to the openziti Helm repo
-helm repo add openziti https://openziti.github.io/helm-charts/
+# subscribe to the hanzozt Helm repo
+helm repo add hanzozt https://hanzozt.github.io/helm-charts/
 
 # install the router chart with a public address
 helm upgrade \
   --install \
   --version "^1.0.0" \
   "ziti-router-123456789" \
-  openziti/ziti-router \
+  hanzozt/ziti-router \
     --set-file enrollmentJwt=/tmp/router1.jwt \
     --set edge.advertisedHost=router1.ziti.example.com
 ```
@@ -72,7 +72,7 @@ helm upgrade \
   --install \
   --version "^1.0.0" \
   "ziti-router-1" \
-  openziti/ziti-router \
+  hanzozt/ziti-router \
     --set-file enrollmentJwt=/tmp/router1.jwt \
     --values /tmp/router-values.yml
 ```
@@ -86,7 +86,7 @@ helm upgrade \
   --install \
   --version "^1.0.0" \
   "ziti-router-1" \
-  openziti/ziti-router \
+  hanzozt/ziti-router \
     --set-file enrollmentJwt=/tmp/router1.jwt \
     --set linkListeners.transport.enabled=false
 ```

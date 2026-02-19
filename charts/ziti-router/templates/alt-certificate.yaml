@@ -1,4 +1,4 @@
-# openziti-helm-charts/charts/ziti-router/templates/alt-certificate.yaml
+# hanzozt-helm-charts/charts/ziti-router/templates/alt-certificate.yaml
 {{- if gt (len $.Values.identity.altServerCerts) 0 -}}
 {{- $root := . }}
 {{- $values := $.Values }}

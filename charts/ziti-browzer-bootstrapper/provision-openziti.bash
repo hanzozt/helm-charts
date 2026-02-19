@@ -12,7 +12,7 @@ set -o pipefail
 set -o xtrace
 
 # workaround: ext-jwt-signer cannot be updated, so dependency tree must be cleaned up first;
-#   https://github.com/openziti/ziti/issues/2459
+#   https://github.com/hanzozt/ziti/issues/2459
 function cleanup() {
     for EMAIL in "${EMAILS[@]}"
     do

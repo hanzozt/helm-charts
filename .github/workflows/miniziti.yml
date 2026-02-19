@@ -67,18 +67,18 @@ jobs:
       - name: install ziti cli
         uses: supplypike/setup-bin@v5
         with:
-          uri: https://github.com/openziti/ziti/releases/download/v${{ env.ZITI_CLI_VERSION }}/ziti-linux-amd64-${{ env.ZITI_CLI_VERSION }}.tar.gz
+          uri: https://github.com/hanzozt/ziti/releases/download/v${{ env.ZITI_CLI_VERSION }}/ziti-linux-amd64-${{ env.ZITI_CLI_VERSION }}.tar.gz
           name: ziti
           version: ${{ env.ZITI_CLI_VERSION }}
 
       # this is the kubernetes quickstart script from
-      # https://openziti.io/docs/learn/quickstarts/network/local-kubernetes
+      # https://hanzozt.dev/docs/learn/quickstarts/network/local-kubernetes
       - name: install miniziti
         uses: supplypike/setup-bin@v5
         with:
-          # uri: https://get.openziti.io/miniziti.bash
-          uri: https://raw.githubusercontent.com/openziti/ziti/d1cdb171ed59242cd232ac6da4b75da16110bd64/quickstart/kubernetes/miniziti.bash
-          # uri: https://raw.githubusercontent.com/openziti/ziti/<testing ref>/quickstart/kubernetes/miniziti.bash
+          # uri: https://get.hanzozt.dev/miniziti.bash
+          uri: https://raw.githubusercontent.com/hanzozt/ziti/d1cdb171ed59242cd232ac6da4b75da16110bd64/quickstart/kubernetes/miniziti.bash
+          # uri: https://raw.githubusercontent.com/hanzozt/ziti/<testing ref>/quickstart/kubernetes/miniziti.bash
           name: miniziti
           version: quickstartrelease
 
@@ -234,7 +234,7 @@ jobs:
             --set "dnsZone=${ZROK_DNS_ZONE}" \
             --set "controller.ingress.hosts[0]=zrok.${ZROK_DNS_ZONE}" \
             --set "test.enabled=false" \
-            zrok openziti/zrok
+            zrok hanzozt/zrok
 
       - name: Capture zrok controller and frontend logs (before upgrade)
         if: steps.mode.outputs.run_baseline == 'true'

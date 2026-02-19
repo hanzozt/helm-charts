@@ -4,14 +4,14 @@
 
 ![Version: 3.1.0](https://img.shields.io/badge/Version-3.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.7.2](https://img.shields.io/badge/AppVersion-1.7.2-informational?style=flat-square)
 
-Host an OpenZiti controller in Kubernetes
+Host an Hanzo ZT controller in Kubernetes
 
 ## Requirements
 
-Add the OpenZiti Charts Repo with Helm.
+Add the Hanzo ZT Charts Repo with Helm.
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
 ```
 
 This chart runs a Ziti controller in Kubernetes.
@@ -90,7 +90,7 @@ For detailed upgrade instructions, including upgrading to HA, see the [internal 
 |clientApi.service.type|the service type for the client API and router control plane|
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --create-namespace \
@@ -181,7 +181,7 @@ share a single external port (e.g., 443) while each pod terminates TLS with its 
 ### Install the Ziti Controller
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --set clientApi.advertisedHost=ctrl1.ziti.example.com \
@@ -202,7 +202,7 @@ Recommended default: use Traefik IngressRouteTCP for TLS passthrough.
 This example creates a Traefik IngressRouteTCP for the client API's ClusterIP service.
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --create-namespace \
@@ -215,7 +215,7 @@ helm upgrade ziti-controller openziti/ziti-controller \
 Or use the provided values file:
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --values values-traefik-ingressroutetcp.yaml
@@ -285,7 +285,7 @@ which can be enabled with `prometheus.service.enabled`. Enabling it will create 
 for configuring the prometheus endpoint. It is also important that you enable
 `fabric.events.enabled` for getting a full set of metrics.
 
-For more information, please check [here](https://openziti.io/docs/learn/core-concepts/metrics/prometheus/).
+For more information, please check [here](https://hanzozt.dev/docs/learn/core-concepts/metrics/prometheus/).
 
 ## Values Reference
 
@@ -380,7 +380,7 @@ For more information, please check [here](https://openziti.io/docs/learn/core-co
 | image.command | list | `["ziti","controller","run"]` | container entrypoint command |
 | image.homeDir | string | `"/home/ziggy"` | homeDir for admin login shell must align with container image's ~/.bashrc for ziti CLI auto-complete to work |
 | image.pullPolicy | string | `"IfNotPresent"` | deployment image pull policy |
-| image.repository | string | `"docker.io/openziti/ziti-controller"` | container image repository for app deployment |
+| image.repository | string | `"docker.io/hanzozt/ziti-controller"` | container image repository for app deployment |
 | image.tag | string | `""` | override the container image tag specified in the chart |
 | managementApi | object | `{"advertisedHost":"{{ .Values.clientApi.advertisedHost }}","advertisedPort":"{{ .Values.clientApi.advertisedPort }}","altDnsNames":[],"containerPort":1281,"dnsNames":[],"gatewayTlsRoute":{"apiVersion":"gateway.networking.k8s.io/v1alpha2","enabled":false,"labels":{},"parentRefs":[]},"ingress":{"annotations":{},"enabled":false,"ingressClassName":"","labels":{},"tls":{}},"service":{"enabled":false,"type":"ClusterIP"},"traefikTcpRoute":{"enabled":false,"entryPoints":["websecure"],"labels":{}}}` | by default, there's no need for a separate cluster service, ingress, or load balancer for the management API because it shares a TLS listener with the client API, and is reachable at the same address and presents the same web identity cert; you may configure a separate service, ingress, load balancer, etc.  for the management API by setting managementApi.service.enabled=true |
 | managementApi.advertisedHost | string | `"{{ .Values.clientApi.advertisedHost }}"` | global DNS name by which routers can resolve a reachable IP for this service |
@@ -546,7 +546,7 @@ Cert Manager and Trust Manager are no longer included as subcharts, so upgrading
 Assuming your future CM release will be named "cert-manager," your future TM release will be named "trust-manager," and both will be installed in namespace "cert-manager," and your Ziti controller is installed in namespace "ziti," you can use these example values to run the provided script to pave the way to installing the version 2 ziti-controller chart, which will delete the cert-manager and trust-manager Operators, preserving the CRDs and their associated resources.
 
 ```bash
-helm pull openziti/ziti-controller
+helm pull hanzozt/ziti-controller
 tar -xvf ziti-controller-*.tgz
 CM_NAMESPACE=cert-manager \
 CM_RELEASE_NAME=cert-manager \

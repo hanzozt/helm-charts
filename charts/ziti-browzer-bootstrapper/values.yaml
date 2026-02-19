@@ -44,7 +44,7 @@ zitiBrowzer:
     port: 1280
 
   runtime:
-    # -- origin trail token. See https://openziti.discourse.group/t/browzer-setup-error-1014-origintrial-subdomain-mismatch/2481
+    # -- origin trail token. See https://community.hanzozt.dev/t/browzer-setup-error-1014-origintrial-subdomain-mismatch/2481
     originTrailToken: ~
     # -- runtime loglevel
     logLevel: info
@@ -76,7 +76,7 @@ service:
 
 image:
   # -- app container image to deploy
-  repository: ghcr.io/openziti/ziti-browzer-bootstrapper
+  repository: ghcr.io/hanzozt/ziti-browzer-bootstrapper
   # -- deployment image pull policy
   #pullPolicy: Always
   pullPolicy: IfNotPresent

@@ -365,7 +365,7 @@ image:
   # -- homeDir for admin login shell must align with container image's ~/.bashrc for ziti CLI auto-complete to work
   homeDir: /home/ziggy
   # -- container image repository for app deployment
-  repository: docker.io/openziti/ziti-controller
+  repository: docker.io/hanzozt/ziti-controller
   # -- override the container image tag specified in the chart
   tag: ""
   # -- deployment image pull policy
@@ -385,7 +385,7 @@ ctrlPlaneCasBundle:
   # Ziti's trusted CA certs (default: empty means all namespaces)
   namespaceSelector: {}
     # matchLabels:
-    #   openziti.io/namespace: "enabled"
+    #   hanzozt.dev/namespace: "enabled"
     # matchLabels:
     #   kubernetes.io/metadata.name: ziti
   # -- name of the ConfigMap managed by the trust-manager Bundle resource. For cluster-join nodes, set this to the first

@@ -1,16 +1,16 @@
-# OpenZiti Helm Charts
+# Hanzo ZT Helm Charts
 
-This is a repository of [Helm](https://helm.sh/) charts for use with [OpenZiti](https://docs.openziti.io) on [Kubernetes](https://kubernetes.io/).
+This is a repository of [Helm](https://helm.sh/) charts for use with [Hanzo ZT](https://docs.hanzozt.dev) on [Kubernetes](https://kubernetes.io/).
 
-These files are published from [a GitHub repo](https://github.com/openziti/helm-charts/#readme) as [a GitHub pages site here](https://openziti.io/helm-charts/).
+These files are published from [a GitHub repo](https://github.com/hanzozt/helm-charts/#readme) as [a GitHub pages site here](https://hanzozt.dev/helm-charts/).
 
 ## Use this Repo
 
 ### Subscribe
 
 ```console
-$ helm repo add openziti https://openziti.io/helm-charts/
-"openziti" has been added to your repositories
+$ helm repo add hanzozt https://hanzozt.dev/helm-charts/
+"hanzozt" has been added to your repositories
 ```
 
 ## Chart Highlights
@@ -50,7 +50,7 @@ For this example, support the `httpbin` chart release version `0.1.2` exists in 
 ```console
 git checkout gh-pages
 cr package ./charts/httpbin
-cr index --owner openziti --git-repo helm-charts --index-path .
+cr index --owner hanzozt --git-repo helm-charts --index-path .
 ```
 
 ## Contribute
@@ -62,4 +62,4 @@ cr index --owner openziti --git-repo helm-charts --index-path .
 1. Wait for GitHub bot to bump chart versions if necessary, i.e., if anything in the chart dir changed since latest tag and the chart version is already released.
 1. Merging to main runs GitHub Actions to package and index the charts and publish the new Helm repo index and READMEs to GitHub Pages.
 
-You may verify changes are present in [the Helm index](https://docs.openziti.io/helm-charts/index.yaml).
+You may verify changes are present in [the Helm index](https://docs.hanzozt.dev/helm-charts/index.yaml).

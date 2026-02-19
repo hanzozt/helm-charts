@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: openziti/ziti-host
+  repository: hanzozt/ziti-host
   # -- overrides the image tag whose default is the chart appversion.
   tag: ""
   # -- container image pull policy

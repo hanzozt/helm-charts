@@ -3,7 +3,7 @@
 
 ![Version: 1.2.1](https://img.shields.io/badge/Version-1.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.7.19](https://img.shields.io/badge/AppVersion-1.7.19-informational?style=flat-square)
 
-Reverse proxy cluster services with an OpenZiti tunneler pod
+Reverse proxy cluster services with an Hanzo ZT tunneler pod
 
 ## Requirements
 
@@ -15,27 +15,27 @@ You may use this chart to publish cluster services to your Ziti network. For exa
 
 ## How this Chart Works
 
-This chart deploys a pod running `ziti-edge-tunnel`, [the OpenZiti Linux tunneler](https://docs.openziti.io/docs/reference/tunnelers/linux/), in service hosting mode. The chart uses container image `docker.io/openziti/ziti-host` which runs `ziti-edge-tunnel run-host`. This puts the Linux tunneler in "hosting" mode which is useful for binding Ziti services without any need for elevated permissions and without any Ziti nameserver or intercepting proxy. You'll be able to publish any server that is known by an IP address or domain name that is reachable from the pod deployed by this chart.
+This chart deploys a pod running `ziti-edge-tunnel`, [the Hanzo ZT Linux tunneler](https://docs.hanzozt.dev/docs/reference/tunnelers/linux/), in service hosting mode. The chart uses container image `docker.io/hanzozt/ziti-host` which runs `ziti-edge-tunnel run-host`. This puts the Linux tunneler in "hosting" mode which is useful for binding Ziti services without any need for elevated permissions and without any Ziti nameserver or intercepting proxy. You'll be able to publish any server that is known by an IP address or domain name that is reachable from the pod deployed by this chart.
 
 The enrolled Ziti identity JSON is persisted in a volume, and the chart will migrate the identity from a secret to the volume if the legacy secret exists.
 
 ## Installation
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
 ```
 
 After adding the charts repo to Helm then you may enroll the identity and install the chart. You may supply a Ziti identity JSON file when you install the chart. This approach enables you to use any option available to the `ziti edge enroll` command.
 
 ```bash
 ziti edge enroll --jwt /tmp/k8s-tunneler.jwt --out /tmp/k8s-tunneler.json
-helm install ziti-host openziti/ziti-host --set-file zitiIdentity=/tmp/k8s-tunneler.json
+helm install ziti-host hanzozt/ziti-host --set-file zitiIdentity=/tmp/k8s-tunneler.json
 ```
 
 Alternatively, you may supply the JWT directly to the chart. In this case, a private key will be generated on first run and the identity will be enrolled.
 
 ```bash
-helm install ziti-host openziti/ziti-host --set-file zitiEnrollToken=/tmp/k8s-tunneler.jwt
+helm install ziti-host hanzozt/ziti-host --set-file zitiEnrollToken=/tmp/k8s-tunneler.jwt
 ```
 
 ### Installation using an existing secret
@@ -51,7 +51,7 @@ kubectl create secret generic k8s-tunneler-identity --from-file=persisted-identi
 Deploy the Helm chart, referring to the existing secret:
 
 ```bash
-helm install ziti-host openziti/ziti-host --set secret.existingSecretName=k8s-tunneler-identity
+helm install ziti-host hanzozt/ziti-host --set secret.existingSecretName=k8s-tunneler-identity
 ```
 
 If desired, change the key name `persisted-identity` with `--set secret.keyName=myKeyName`.
@@ -73,7 +73,7 @@ The Ziti identity is stored in a directory inside the container, which is backed
 | hostNetwork | bool | `false` | bool: host network mode |
 | image.args | list | `[]` | additional container command arguments, e.g., ["--verbose"] |
 | image.pullPolicy | string | `"IfNotPresent"` | container image pull policy |
-| image.repository | string | `"openziti/ziti-host"` |  |
+| image.repository | string | `"hanzozt/ziti-host"` |  |
 | image.tag | string | `""` | overrides the image tag whose default is the chart appversion. |
 | imagePullSecrets | list | `[]` | secrets containing OCI registry credentials for image pull |
 | nameOverride | string | `""` | override name for the Helm Release |

@@ -1,4 +1,4 @@
-# This is the Graphical UI Console - https://github.com/openziti/ziti-browzer-bootstrapper
+# This is the Graphical UI Console - https://github.com/hanzozt/ziti-browzer-bootstrapper
 ---
 apiVersion: apps/v1
 kind: Deployment

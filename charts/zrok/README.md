@@ -10,10 +10,10 @@ Run the zrok controller and zrok frontend components as a K8s deployment
 
 ## Requirements
 
-### Add the OpenZiti Charts Repo to Helm
+### Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
 ```
 
 ## Minimal Example with Traefik Ingress
@@ -34,12 +34,12 @@ ZITI_PWD=$(kubectl -n "${ZITI_NAMESPACE}" get secrets "ziti-controller-admin-sec
 helm upgrade \
     --install \
     --namespace zrok --create-namespace \
-    --values https://openziti.io/helm-charts/charts/zrok/values-ingress-traefik.yaml \
+    --values https://hanzozt.dev/helm-charts/charts/zrok/values-ingress-traefik.yaml \
     --set "ziti.advertisedHost=${ZITI_MGMT_API_HOST}" \
     --set "ziti.password=${ZITI_PWD}" \
     --set "dnsZone=${ZROK_DNS_ZONE}" \
     --set "controller.ingress.hosts[0]=api.${ZROK_DNS_ZONE}" \
-    zrok openziti/zrok
+    zrok hanzozt/zrok
 ```
 
 ## TLS termination with Traefik
@@ -57,7 +57,7 @@ One way to terminate TLS with Traefik is to use Cert Manager. Cert Manager will 
         --set "controller.ingress.tlsSecretName=zrok-api-tls" \
         --set "frontend.ingress.annotations=cert-manager.io/cluster-issuer: letsencrypt-prod" \
         --set "frontend.ingress.tlsSecretName=zrok-wildcard-tls" \
-        openziti/zrok
+        hanzozt/zrok
     ```
 
 ## Default account
@@ -177,7 +177,7 @@ zrok   traefik  api.zrok.192.168.49.2.sslip.io    192.168.49.2   80      8m41s
 | frontend.specVersion | int | `4` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"openziti/zrok"` |  |
+| image.repository | string | `"hanzozt/zrok"` |  |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | influxdb2.adminUser.existingSecret | string | `""` | The name of an existing secret with admin-password and admin-token for the InfluxDB service |
@@ -204,7 +204,7 @@ zrok   traefik  api.zrok.192.168.49.2.sslip.io    192.168.49.2   80      8m41s
 | tolerations | list | `[]` |  |
 | ziti.advertisedHost | string | `"localhost"` | The Ziti Management API host to bootstrap with zrok and to collect fabric metrics from |
 | ziti.advertisedPort | string | `"443"` | The Ziti Management API port |
-| ziti.ca_cert_configmap | string | `"ziti-controller-ctrl-plane-cas"` | name of the configmap containing the Ziti CA certificate trust bundle that trust-manager syncs to namespaces with the label "openziti.io/namespace: enabled"; has format {{controller's Helm release name}}-ctrl-plane-cas |
+| ziti.ca_cert_configmap | string | `"ziti-controller-ctrl-plane-cas"` | name of the configmap containing the Ziti CA certificate trust bundle that trust-manager syncs to namespaces with the label "hanzozt.dev/namespace: enabled"; has format {{controller's Helm release name}}-ctrl-plane-cas |
 | ziti.ca_cert_dir | string | `"/etc/ziti"` | mountpoint of the Ziti CA certificate trust bundle |
 | ziti.ca_cert_file | string | `"ctrl-plane-cas.crt"` | key name of trust bundle in configmap and filename to project into mountpoint |
 | ziti.password | string | `"admin"` | Ziti admin login password |

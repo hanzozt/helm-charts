@@ -12,7 +12,7 @@ Prometheus is a monitoring system and time series database.
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| OpenZiti | <help.openziti.org> |  |
+| Hanzo ZT | <help.hanzozt.org> |  |
 
 ## Source Code
 
@@ -32,7 +32,7 @@ This Helm chart deploys Prometheus with embedded Ziti. Ziti solves the target re
 
 ## Overview
 
-The operation of this chart is described in [part 2 of the PrometheuZ tutorial](https://docs.openziti.io/blog/zitification/prometheus/part2/#deploying-prometheuz-1).
+The operation of this chart is described in [part 2 of the PrometheuZ tutorial](https://docs.hanzozt.dev/blog/zitification/prometheus/part2/#deploying-prometheuz-1).
 
 ```console
 helm install prometheuz ./charts/prometheus \
@@ -305,7 +305,7 @@ by scaling the deployment down and then up this will force a restart so that the
 | configmapReload.alertmanager.extraConfigmapMounts | list | `[]` |  |
 | configmapReload.alertmanager.extraVolumeDirs | list | `[]` |  |
 | configmapReload.alertmanager.image.pullPolicy | string | `"Always"` |  |
-| configmapReload.alertmanager.image.repository | string | `"openziti/configmap-reloadz"` |  |
+| configmapReload.alertmanager.image.repository | string | `"hanzozt/configmap-reloadz"` |  |
 | configmapReload.alertmanager.image.tag | string | `"latest-amd64"` |  |
 | configmapReload.alertmanager.name | string | `"configmap-reload"` |  |
 | configmapReload.alertmanager.resources | object | `{}` |  |
@@ -314,7 +314,7 @@ by scaling the deployment down and then up this will force a restart so that the
 | configmapReload.prometheus.extraConfigmapMounts | list | `[]` |  |
 | configmapReload.prometheus.extraVolumeDirs | list | `[]` |  |
 | configmapReload.prometheus.image.pullPolicy | string | `"Always"` |  |
-| configmapReload.prometheus.image.repository | string | `"openziti/configmap-reloadz"` |  |
+| configmapReload.prometheus.image.repository | string | `"hanzozt/configmap-reloadz"` |  |
 | configmapReload.prometheus.image.tag | string | `"latest-amd64"` |  |
 | configmapReload.prometheus.name | string | `"configmap-reload"` |  |
 | configmapReload.prometheus.resources | object | `{}` |  |
@@ -433,7 +433,7 @@ by scaling the deployment down and then up this will force a restart so that the
 | server.hostAliases | list | `[]` |  |
 | server.hostNetwork | bool | `false` |  |
 | server.image.pullPolicy | string | `"IfNotPresent"` |  |
-| server.image.repository | string | `"openziti/prometheuz"` |  |
+| server.image.repository | string | `"hanzozt/prometheuz"` |  |
 | server.image.tag | string | `"0.0.1"` |  |
 | server.ingress.annotations | object | `{}` |  |
 | server.ingress.enabled | bool | `false` |  |

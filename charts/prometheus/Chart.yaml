@@ -12,8 +12,8 @@ sources:
   - https://github.com/prometheus/node_exporter
   - https://github.com/kubernetes/kube-state-metrics
 maintainers:
-  - name: OpenZiti
-    email: help.openziti.org
+  - name: Hanzo ZT
+    email: help.hanzozt.org
 engine: gotpl
 type: application
 dependencies:

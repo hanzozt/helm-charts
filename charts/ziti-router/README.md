@@ -3,12 +3,12 @@
 
 ![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.7.2](https://img.shields.io/badge/AppVersion-1.7.2-informational?style=flat-square)
 
-Host an OpenZiti router in Kubernetes
+Host an Hanzo ZT router in Kubernetes
 
-## Add the OpenZiti Charts Repo to Helm
+## Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
 ```
 
 ## Public Router
@@ -20,15 +20,15 @@ The default configuration listens for incoming edge connections and router links
 ziti edge create edge-router "router1" \
   --tunneler-enabled --jwt-output-file /tmp/router1.jwt
 
-# subscribe to the openziti Helm repo
-helm repo add openziti https://openziti.github.io/helm-charts/
+# subscribe to the hanzozt Helm repo
+helm repo add hanzozt https://hanzozt.github.io/helm-charts/
 
 # install the router chart with a public address
 helm upgrade \
   --install \
   --version "^1.0.0" \
   "ziti-router-123456789" \
-  openziti/ziti-router \
+  hanzozt/ziti-router \
     --set-file enrollmentJwt=/tmp/router1.jwt \
     --set edge.advertisedHost=router1.ziti.example.com
 ```
@@ -63,7 +63,7 @@ helm upgrade \
   --install \
   --version "^1.0.0" \
   "ziti-router-1" \
-  openziti/ziti-router \
+  hanzozt/ziti-router \
     --set-file enrollmentJwt=/tmp/router1.jwt \
     --values /tmp/router-values.yml
 ```
@@ -77,7 +77,7 @@ helm upgrade \
   --install \
   --version "^1.0.0" \
   "ziti-router-1" \
-  openziti/ziti-router \
+  hanzozt/ziti-router \
     --set-file enrollmentJwt=/tmp/router1.jwt \
     --set linkListeners.transport.enabled=false
 ```
@@ -306,7 +306,7 @@ identity:
 | image.args | list | `["run","{{ .Values.configMountDir }}/{{ .Values.configFile }}"]` | deployment container command args and opts |
 | image.command | list | `["/entrypoint.bash"]` | deployment container command |
 | image.pullPolicy | string | `"Always"` | deployment image pull policy |
-| image.repository | string | `"docker.io/openziti/ziti-router"` | container image tag for deployment |
+| image.repository | string | `"docker.io/hanzozt/ziti-router"` | container image tag for deployment |
 | image.tag | string | `nil` | container image tag (default is Chart's appVersion) |
 | linkDialers.transport.extraProps | object | `{}` | extra properties to define for the transport link dialer, e.g., groups |
 | linkListeners.additionalListeners | list | `[]` | Additional link listeners. Each entry defines an extra 'link' binding in the router config. |

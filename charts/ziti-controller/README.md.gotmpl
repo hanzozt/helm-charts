@@ -17,10 +17,10 @@
 
 ## Requirements
 
-Add the OpenZiti Charts Repo with Helm.
+Add the Hanzo ZT Charts Repo with Helm.
 
 ```bash
-helm repo add openziti https://docs.openziti.io/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 This chart runs a Ziti controller in Kubernetes. 
@@ -99,7 +99,7 @@ For detailed upgrade instructions, including upgrading to HA, see the [internal 
 |clientApi.service.type|the service type for the client API and router control plane|
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --create-namespace \
@@ -190,7 +190,7 @@ share a single external port (e.g., 443) while each pod terminates TLS with its 
 ### Install the Ziti Controller
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --set clientApi.advertisedHost=ctrl1.ziti.example.com \
@@ -212,7 +212,7 @@ Recommended default: use Traefik IngressRouteTCP for TLS passthrough.
 This example creates a Traefik IngressRouteTCP for the client API's ClusterIP service.
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --create-namespace \
@@ -225,7 +225,7 @@ helm upgrade ziti-controller openziti/ziti-controller \
 Or use the provided values file:
 
 ```bash
-helm upgrade ziti-controller openziti/ziti-controller \
+helm upgrade ziti-controller hanzozt/ziti-controller \
     --install \
     --namespace ziti \
     --values values-traefik-ingressroutetcp.yaml
@@ -295,7 +295,7 @@ which can be enabled with `prometheus.service.enabled`. Enabling it will create 
 for configuring the prometheus endpoint. It is also important that you enable
 `fabric.events.enabled` for getting a full set of metrics.
 
-For more information, please check [here](https://openziti.io/docs/learn/core-concepts/metrics/prometheus/).
+For more information, please check [here](https://hanzozt.io/docs/learn/core-concepts/metrics/prometheus/).
 
 ## Values Reference
 
@@ -391,7 +391,7 @@ Cert Manager and Trust Manager are no longer included as subcharts, so upgrading
 Assuming your future CM release will be named "cert-manager," your future TM release will be named "trust-manager," and both will be installed in namespace "cert-manager," and your Ziti controller is installed in namespace "ziti," you can use these example values to run the provided script to pave the way to installing the version 2 ziti-controller chart, which will delete the cert-manager and trust-manager Operators, preserving the CRDs and their associated resources.
 
 ```bash
-helm pull openziti/ziti-controller
+helm pull hanzozt/ziti-controller
 tar -xvf ziti-controller-*.tgz
 CM_NAMESPACE=cert-manager \
 CM_RELEASE_NAME=cert-manager \

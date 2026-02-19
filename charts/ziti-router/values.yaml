@@ -377,7 +377,7 @@ configFile:       ziti-router.yaml
 
 image:
   # -- container image tag for deployment
-  repository: docker.io/openziti/ziti-router
+  repository: docker.io/hanzozt/ziti-router
   # -- container image tag (default is Chart's appVersion)
   tag:
   # -- deployment image pull policy

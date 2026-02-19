@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openziti/zrok
+  repository: hanzozt/zrok
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -234,7 +234,7 @@ ziti:
   password: admin
   # -- name of the configmap containing the Ziti CA certificate trust bundle
   # that trust-manager syncs to namespaces with the label
-  # "openziti.io/namespace: enabled"; has format {{controller's Helm release name}}-ctrl-plane-cas
+  # "hanzozt.dev/namespace: enabled"; has format {{controller's Helm release name}}-ctrl-plane-cas
   ca_cert_configmap: ziti-controller-ctrl-plane-cas
   # -- mountpoint of the Ziti CA certificate trust bundle
   ca_cert_dir: /etc/ziti

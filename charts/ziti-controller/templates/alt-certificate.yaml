@@ -1,4 +1,4 @@
-# openziti-helm-charts/charts/ziti-controller/templates/alt-certificate.yaml
+# hanzozt-helm-charts/charts/ziti-controller/templates/alt-certificate.yaml
 {{- if gt (len $.Values.webBindingPki.altServerCerts) 0 -}}
 {{- $certs := ((include "ziti-controller.getCertManagerAltServerCerts" $.Values.webBindingPki.altServerCerts) | fromJson).certManagerCerts -}}
   {{- if gt (len $certs) 0 }}
