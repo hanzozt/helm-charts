@@ -11,7 +11,7 @@ Host an Hanzo ZT controller in Kubernetes
 Add the Hanzo ZT Charts Repo with Helm.
 
 ```bash
-helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 This chart runs a Ziti controller in Kubernetes.
@@ -285,7 +285,7 @@ which can be enabled with `prometheus.service.enabled`. Enabling it will create 
 for configuring the prometheus endpoint. It is also important that you enable
 `fabric.events.enabled` for getting a full set of metrics.
 
-For more information, please check [here](https://hanzozt.dev/docs/learn/core-concepts/metrics/prometheus/).
+For more information, please check [here](https://hanzozt.io/docs/learn/core-concepts/metrics/prometheus/).
 
 ## Values Reference
 

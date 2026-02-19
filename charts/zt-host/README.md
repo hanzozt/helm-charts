@@ -15,14 +15,14 @@ You may use this chart to publish cluster services to your Ziti network. For exa
 
 ## How this Chart Works
 
-This chart deploys a pod running `zt-edge-tunnel`, [the Hanzo ZT Linux tunneler](https://docs.hanzozt.dev/docs/reference/tunnelers/linux/), in service hosting mode. The chart uses container image `docker.io/hanzozt/zt-host` which runs `zt-edge-tunnel run-host`. This puts the Linux tunneler in "hosting" mode which is useful for binding Ziti services without any need for elevated permissions and without any Ziti nameserver or intercepting proxy. You'll be able to publish any server that is known by an IP address or domain name that is reachable from the pod deployed by this chart.
+This chart deploys a pod running `zt-edge-tunnel`, [the Hanzo ZT Linux tunneler](https://docs.hanzozt.io/docs/reference/tunnelers/linux/), in service hosting mode. The chart uses container image `docker.io/hanzozt/zt-host` which runs `zt-edge-tunnel run-host`. This puts the Linux tunneler in "hosting" mode which is useful for binding Ziti services without any need for elevated permissions and without any Ziti nameserver or intercepting proxy. You'll be able to publish any server that is known by an IP address or domain name that is reachable from the pod deployed by this chart.
 
 The enrolled Ziti identity JSON is persisted in a volume, and the chart will migrate the identity from a secret to the volume if the legacy secret exists.
 
 ## Installation
 
 ```bash
-helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 After adding the charts repo to Helm then you may enroll the identity and install the chart. You may supply a Ziti identity JSON file when you install the chart. This approach enables you to use any option available to the `zt edge enroll` command.

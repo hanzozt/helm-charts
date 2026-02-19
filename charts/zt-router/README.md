@@ -8,7 +8,7 @@ Host an Hanzo ZT router in Kubernetes
 ## Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 ## Public Router

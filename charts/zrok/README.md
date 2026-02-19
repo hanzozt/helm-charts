@@ -13,7 +13,7 @@ Run the zrok controller and zrok frontend components as a K8s deployment
 ### Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 ## Minimal Example with Traefik Ingress
@@ -34,7 +34,7 @@ ZITI_PWD=$(kubectl -n "${ZITI_NAMESPACE}" get secrets "zt-controller-admin-secre
 helm upgrade \
     --install \
     --namespace zrok --create-namespace \
-    --values https://hanzozt.dev/helm-charts/charts/zrok/values-ingress-traefik.yaml \
+    --values https://hanzozt.io/helm-charts/charts/zrok/values-ingress-traefik.yaml \
     --set "zt.advertisedHost=${ZITI_MGMT_API_HOST}" \
     --set "zt.password=${ZITI_PWD}" \
     --set "dnsZone=${ZROK_DNS_ZONE}" \

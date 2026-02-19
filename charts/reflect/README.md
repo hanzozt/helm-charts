@@ -5,7 +5,7 @@
 
 Deploy a pod running the Ziti-embeded version of go-httpbin, a REST API server.
 
-This chart provides a simple byte echoing server for demos and testing Ziti. You may read more about how this app can be used in [the PrometheuZ tutorial](https://docs.hanzozt.dev/blog/ztfication/prometheus/part2/#deploy-reflectz-1).
+This chart provides a simple byte echoing server for demos and testing Ziti. You may read more about how this app can be used in [the PrometheuZ tutorial](https://docs.hanzozt.io/blog/ztfication/prometheus/part2/#deploy-reflectz-1).
 
 ```bash
 helm install reflectz hanzozt-test-kitchen/reflect \

@@ -17,13 +17,13 @@ Before configuring the BrowZer Bootstrapper, you must have a working Hanzo ZT ne
   1. Create an ext-jwt-signer entity representing your OIDC provider
   1. Create an auth-policy entity for associating identities with the OIDC provider
   1. Create an identity that uses the new auth-policy
-1. The Ziti Controller's client API must be configured with a publicly trusted server certificate. If the controller is deployed in Kubernetes, you can set [input values to like these](https://hanzozt.dev/docs/guides/deployments/kubernetes/kubernetes-controller#alternative-web-server-certificates).
-1. The Ziti Router's edge listener must be configured with a publicly trusted server certificate for the WebSocket protocol. If the router is deployed in Kubernetes, you can set [input values to like these](https://hanzozt.dev/docs/guides/deployments/kubernetes/kubernetes-router#additional-listeners-and-volumes).
+1. The Ziti Controller's client API must be configured with a publicly trusted server certificate. If the controller is deployed in Kubernetes, you can set [input values to like these](https://hanzozt.io/docs/guides/deployments/kubernetes/kubernetes-controller#alternative-web-server-certificates).
+1. The Ziti Router's edge listener must be configured with a publicly trusted server certificate for the WebSocket protocol. If the router is deployed in Kubernetes, you can set [input values to like these](https://hanzozt.io/docs/guides/deployments/kubernetes/kubernetes-router#additional-listeners-and-volumes).
 
 ## Add the Hanzo ZT Charts Repo to Helm
 
 ```bash
-helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 ## Minimal Installation

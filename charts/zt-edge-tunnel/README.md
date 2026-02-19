@@ -18,12 +18,12 @@ Kubernetes: `>= 1.20.0-0`
 You may use this chart to reach services node-wide via your Ziti network via DNS. For example, if you create a repository or container registry Ziti service, and your cluster has no internet access, you can reach those repositories or container registries via Ziti services.
 
 **NOTE:**
-For one node kubernetes approaches like k3s, this works out-of-the-box and you can extend your coredns configuration to forward to the Ziti DNS IP, as you can see [here](https://hanzozt.dev/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
+For one node kubernetes approaches like k3s, this works out-of-the-box and you can extend your coredns configuration to forward to the Ziti DNS IP, as you can see [here](https://hanzozt.io/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
 For multinode kubernetes installations, where your cluster DNS could run on a different node, you need to install the [node-local-dns](https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/) feature, which secures that the Ziti DNS name will be resolved locally, on the very same tunneler, as Ziti Intercept IPs can change from node to node. See [this](https://github.com/lablabs/k8s-nodelocaldns-helm) helm chart for a possible implementation.
 
 ## How this Chart Works
 
-This chart deploys a DaemonSet running [the Hanzo ZT Linux tunneler](https://docs.hanzozt.dev/docs/reference/tunnelers/linux/), in transparent node-level proxy with DNS nameserver. The chart uses container image `docker.io/hanzozt/zt-edge-tunnel` which runs `zt-edge-tunnel run`.
+This chart deploys a DaemonSet running [the Hanzo ZT Linux tunneler](https://docs.hanzozt.io/docs/reference/tunnelers/linux/), in transparent node-level proxy with DNS nameserver. The chart uses container image `docker.io/hanzozt/zt-edge-tunnel` which runs `zt-edge-tunnel run`.
 
 ### Identity Storage Options
 
@@ -36,7 +36,7 @@ The chart supports two approaches for persisting the tunneler's Ziti identity:
 ## Installation
 
 ```console
-helm repo add hanzozt https://docs.hanzozt.dev/helm-charts/
+helm repo add hanzozt https://docs.hanzozt.io/helm-charts/
 ```
 
 #### Identity Storage (Preferred) - Identity in PVC from Enrollment Token
@@ -141,7 +141,7 @@ helm install zt-edge-tunnel hanzozt/zt-edge-tunnel \
 
 ### Configure CoreDNS
 
-If you want to resolve your Ziti domain inside the pods, you need to customize CoreDNS. See [Official docs](https://hanzozt.dev/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
+If you want to resolve your Ziti domain inside the pods, you need to customize CoreDNS. See [Official docs](https://hanzozt.io/docs/guides/kubernetes/workload-tunneling/kubernetes-daemonset/).
 
 #### Multinode example
 Customise ConfigMap that you apply for node-local-dns by appending the zt specific domain and the upstream DNS server of zt-edge-tunnel,
@@ -302,7 +302,7 @@ helm upgrade {release} {source dir}
 
 ### Log Level Reference
 
-[Hanzo ZT tunneler](https://hanzozt.dev/docs/reference/tunnelers/linux/linux-tunnel-options/#zt-edge-tunnel-environment-variables) and [TLSUV](https://github.com/hanzozt/tlsuv) log levels are represented by integers, as follows,
+[Hanzo ZT tunneler](https://hanzozt.io/docs/reference/tunnelers/linux/linux-tunnel-options/#zt-edge-tunnel-environment-variables) and [TLSUV](https://github.com/hanzozt/tlsuv) log levels are represented by integers, as follows,
 
 |   *Log Level*  | *Value* |
 |:--------------:|:-------:|
