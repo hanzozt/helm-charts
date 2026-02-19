@@ -1,4 +1,4 @@
-{{- if .Values.zitiEnrollment }}
+{{- if .Values.ztEnrollment }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -35,15 +35,15 @@ spec:
       serviceAccountName: {{ include "httpbin.fullname" . }}-hook-serviceaccount
       containers:
       - name: post-install-job
-        image: {{ .Values.zitiImage.repository }}
-        imagePullPolicy: {{ .Values.zitiImage.pullPolicy }}
+        image: {{ .Values.ztImage.repository }}
+        imagePullPolicy: {{ .Values.ztImage.pullPolicy }}
         volumeMounts:
           - name: httpbin-config
             mountPath: /usr/local/bin/{{ .Values.initScriptFile }}
             subPath: {{ .Values.initScriptFile }}
             readOnly: true
-          - name: ziti-jwt
-            mountPath: /etc/ziti/id.jwt
+          - name: zt-jwt
+            mountPath: /etc/zt/id.jwt
             subPath: id.jwt
             readOnly: true
         command: ["{{ .Values.initScriptFile }}"]
@@ -55,11 +55,11 @@ spec:
               - key: {{ .Values.initScriptFile }}
                 path: {{ .Values.initScriptFile }}
                 mode: 0555
-        - name: ziti-jwt
+        - name: zt-jwt
           secret:
             secretName: {{ include "httpbin.fullname" . }}-enrollment
             defaultMode: 0444
             items:
-            - key: ziti_enrollment_jwt
+            - key: zt_enrollment_jwt
               path: id.jwt
 {{- end -}}

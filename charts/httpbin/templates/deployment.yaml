@@ -40,16 +40,16 @@ spec:
             - name: ENABLE_ZITI
               value: "true"
             - name: ZITI_SERVICE_NAME
-              value: {{ required "You must specify the Ziti service name. Try adding --set zitiServiceName=\"my httpbin service\" to your Helm command." .Values.zitiServiceName }}
+              value: {{ required "You must specify the Ziti service name. Try adding --set ztServiceName=\"my httpbin service\" to your Helm command." .Values.ztServiceName }}
             - name: ZITI_IDENTITY
-              value: /etc/ziti/id.json
+              value: /etc/zt/id.json
             {{- if .Values.debug }}
             - name: ZITI_SDK_DEBUG
               value: "1"
             {{- end }}
           volumeMounts:
-            - name: ziti-identity
-              mountPath: /etc/ziti/id.json
+            - name: zt-identity
+              mountPath: /etc/zt/id.json
               subPath: id.json
               readOnly: true
       {{- with .Values.nodeSelector }}
@@ -65,10 +65,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        - name: ziti-identity
+        - name: zt-identity
           secret:
             secretName: {{ include "httpbin.fullname" . }}-identity
             defaultMode: 0444
             items:
-            - key: ziti_identity_json
+            - key: zt_identity_json
               path: id.json

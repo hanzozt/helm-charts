@@ -1,0 +1,10 @@
+{{/*
+Validation: Ensure required identity configuration is provided for new installations
+*/}}
+{{- if not .Values.secret.existingSecretName }}
+  {{- if .Release.IsInstall }}
+    {{- if not (or .Values.ztIdentity .Values.ztEnrollToken) }}
+      {{- fail "ERROR: For new installations without an existing secret, you must supply either 'ztIdentity' (enrolled identity JSON) or 'ztEnrollToken' (JWT for enrollment). Use --set-file ztIdentity=<file> or --set-file ztEnrollToken=<file>" }}
+    {{- end }}
+  {{- end }}
+{{- end }}

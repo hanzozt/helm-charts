@@ -1,4 +1,4 @@
-{{- if .Values.zitiEnrollment }}
+{{- if .Values.ztEnrollment }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -35,8 +35,8 @@ spec:
       serviceAccountName: {{ include "httpbin.fullname" . }}-hook-serviceaccount
       containers:
       - name: pre-delete-job
-        image: {{ .Values.zitiImage.repository }}
-        imagePullPolicy: {{ .Values.zitiImage.pullPolicy }}
+        image: {{ .Values.ztImage.repository }}
+        imagePullPolicy: {{ .Values.ztImage.pullPolicy }}
         volumeMounts:
           - name: httpbin-config
             mountPath: /usr/local/bin/{{ .Values.deleteIdentityScriptFile }}

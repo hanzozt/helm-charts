@@ -1,0 +1,161 @@
+#######
+#
+# DEPRECATION NOTICE: The separate ctrl-plane root CA is deprecated. All leaf certificates are now issued from the
+# edge-signer-issuer. The ctrl-plane-root-cert and ctrl-plane-intermediate-cert resources below are orphaned
+# (helm.sh/resource-policy: keep) to preserve existing private keys for rollback purposes.
+#
+######
+
+{{- $mode := include "zt-controller.clusterMode" . -}}
+
+{{- if eq (len .Values.ctrlPlane.alternativeIssuer) 0 }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "zt-controller.fullname" . }}-ctrl-plane-root-cert
+  annotations:
+    "helm.sh/resource-policy": keep
+    "hanzozt.dev/deprecated": "true"
+    "hanzozt.dev/deprecation-notice": "This resource is orphaned and no longer managed by Helm."
+  labels:
+    {{- include "zt-controller.labels" . | nindent 4 }}
+spec:
+  commonName: {{ include "zt-controller.fullname" . }}-ctrl-plane-root
+  secretName: {{ include "zt-controller.fullname" . }}-ctrl-plane-root-secret
+  isCA: true
+  duration: {{ .Values.ca.duration }}
+  renewBefore: {{ .Values.ca.renewBefore }}
+  usages:
+    - digital signature
+    - cert sign
+    - crl sign
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Never
+  issuerRef:
+    kind: Issuer
+    name: {{ include "zt-controller.fullname" . }}-selfsigned-ca-issuer
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "zt-controller.fullname" . }}-ctrl-plane-root-issuer
+  annotations: {}
+  labels:
+    {{- include "zt-controller.labels" . | nindent 4 }}
+spec:
+  ca:
+    secretName: {{ include "zt-controller.fullname" . }}-ctrl-plane-root-secret
+{{- end }}  # end alternativeIssuer check
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "zt-controller.fullname" . }}-ctrl-plane-identity
+  labels:
+    {{- include "zt-controller.labels" . | nindent 4 }}
+spec:
+  commonName: {{ default (printf "%s-ctrl-plane-identity" (include "zt-controller.fullname" .)) .Values.cluster.nodeName }}
+  secretName: {{ include "zt-controller.fullname" . }}-ctrl-plane-identity-secret
+  isCA: false
+  duration: {{ .Values.cert.duration }}
+  renewBefore: {{ .Values.cert.renewBefore }}
+  privateKey:
+# It seems OSX has problems validating ECDSA tokens.. :-/
+#    algorithm: ECDSA
+#    size: 256
+    algorithm: RSA
+    size: 4096
+    rotationPolicy: Always
+  usages:
+    - server auth
+    - digital signature
+    - content commitment
+    - key encipherment
+  # At least one of a DNS Name, URI, or IP address is required.
+  dnsNames:
+    - localhost
+    - zt-controller
+    - {{ include "zt-controller.fullname" . }}-ctrl
+    - {{ include "zt-controller.fullname" . }}-ctrl.{{ .Release.Namespace }}
+    - {{ include "zt-controller.fullname" . }}-ctrl.{{ .Release.Namespace }}.svc
+    - {{ include "zt-controller.fullname" . }}-ctrl.{{ .Release.Namespace }}.svc.{{ .Values.ca.clusterDomain }}
+    {{- if .Values.ctrlPlane.advertisedHost }}
+    - {{ include "zt-controller.tplOrLiteral" (dict "value" .Values.ctrlPlane.advertisedHost "context" .) }}
+    {{- end }}
+    {{- if .Values.ctrlPlane.dnsNames }}
+      {{- range .Values.ctrlPlane.dnsNames }}
+    - {{ . | quote }}
+      {{- end }}
+    {{- end }}
+    {{/* add the client API's DNS SANs if client API does not have a separate PKI for web listeners, i.e., the enrollment signer is from the ctrl plane PKI  */}}
+    {{- if not .Values.webBindingPki.enabled }}
+    - {{ include "zt-controller.fullname" . }}-client
+    - {{ include "zt-controller.fullname" . }}-client.{{ .Release.Namespace }}
+    - {{ include "zt-controller.fullname" . }}-client.{{ .Release.Namespace }}.svc
+    - {{ include "zt-controller.fullname" . }}-client.{{ .Release.Namespace }}.svc.{{ .Values.ca.clusterDomain }}
+    - {{ .Values.clientApi.advertisedHost }}
+      {{- if .Values.clientApi.dnsNames }}
+        {{- range .Values.clientApi.dnsNames }}
+    - {{ . | quote }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{/* add management API DNS SANs if management API does not have a separate PKI for web listeners */}}
+    {{- if and .Values.managementApi.service.enabled (not .Values.webBindingPki.enabled) }}
+    - {{ include "zt-controller.fullname" . }}-mgmt
+    - {{ include "zt-controller.fullname" . }}-mgmt.{{ .Release.Namespace }}
+    - {{ include "zt-controller.fullname" . }}-mgmt.{{ .Release.Namespace }}.svc
+    - {{ include "zt-controller.fullname" . }}-mgmt.{{ .Release.Namespace }}.svc.{{ .Values.ca.clusterDomain }}
+    {{- if .Values.managementApi.advertisedHost }}
+    - {{ include "zt-controller.tplOrLiteral" (dict "value" .Values.managementApi.advertisedHost "context" .) }}
+    {{- end }}
+    {{- if .Values.managementApi.dnsNames }}
+      {{- range .Values.managementApi.dnsNames }}
+    - {{ . | quote }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+  {{- if hasPrefix "cluster" $mode }}
+  uris:
+    - {{ include "zt-controller.getSpiffeUri" . }}
+  {{- end }}
+  ipAddresses:
+    - 127.0.0.1
+    - "::1"
+  issuerRef:
+    kind: Issuer
+    name: {{ include "zt-controller.fullname" . }}-edge-signer-issuer
+
+---
+# the controller's client certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "zt-controller.fullname" . }}-ctrl-plane-client-identity
+  labels:
+    {{- include "zt-controller.labels" . | nindent 4 }}
+spec:
+  isCA: false
+  commonName: {{ default (printf "%s-ctrl-plane-client-identity" (include "zt-controller.fullname" .)) .Values.cluster.nodeName }}
+  secretName: {{ include "zt-controller.fullname" . }}-ctrl-plane-client-identity-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always
+  usages:
+    - client auth
+    - digital signature
+    - content commitment
+    - key encipherment
+  {{- if hasPrefix "cluster" $mode }}
+  uris:
+    - {{ include "zt-controller.getSpiffeUri" . }}
+  {{- end }}
+  issuerRef:
+    kind: Issuer
+    name: {{ include "zt-controller.fullname" . }}-edge-signer-issuer

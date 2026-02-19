@@ -14,8 +14,8 @@ CHARTS_DIR="$REPO_ROOT/charts"
 
 echo "Using helm-docs version: $(helm-docs --version)"
 
-# Find all ziti-* charts
-for chart in "$CHARTS_DIR"/ziti-*; do
+# Find all zt-* charts
+for chart in "$CHARTS_DIR"/zt-*; do
     if [ -d "$chart" ]; then
         chart_name=$(basename "$chart")
         echo "Processing $chart_name..."
@@ -37,4 +37,4 @@ for chart in "$CHARTS_DIR"/ziti-*; do
     fi
 done
 
-echo "All ziti-* charts processed."
+echo "All zt-* charts processed."

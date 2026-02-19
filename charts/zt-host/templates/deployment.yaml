@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zt-host.fullname" . }}
+  labels:
+    {{- include "zt-host.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "zt-host.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "zt-host.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "zt-host.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      {{- if not .Values.secret.existingSecretName }}
+      initContainers:
+        - name: chown-identity-dir
+          image: busybox
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+          command: ["sh", "-c", "chown -Rc {{ .Values.podSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.runAsGroup }} {{ include "zt-host.identityMountPath" . }}"]
+          volumeMounts:
+            - name: persisted-identity
+              mountPath: {{ include "zt-host.identityMountPath" . }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- toYaml .Values.ports | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{ if .Values.image.command }}
+          command: {{ .Values.image.command }}
+          {{ end }}
+          args:
+            {{- toYaml .Values.image.args | nindent 12 }}
+          env:
+            - name: ZITI_IDENTITY_BASENAME
+              value: {{ include "zt-host.fullname" . }}-identity
+            {{- if .Values.ztIdentity }}
+            - name: ZITI_IDENTITY_JSON
+              value: {{ .Values.ztIdentity | quote }}
+            {{- end }}
+            {{- if .Values.ztEnrollToken }}
+            - name: ZITI_ENROLL_TOKEN
+              value: {{ .Values.ztEnrollToken }}
+            {{- end }}
+          volumeMounts:
+            - mountPath: {{ include "zt-host.identityMountPath" . }}
+              name: persisted-identity
+              {{- if .Values.secret.existingSecretName }}
+              readOnly: true
+              {{- end }}
+            {{- if .Values.spireAgent.enabled }}
+            - mountPath: {{ .Values.spireAgent.spireSocketMnt }}
+              name: spire-agent-socket
+              readOnly: true
+            {{- end }}
+            {{- range .Values.additionalVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+      hostNetwork: {{ .Values.hostNetwork }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- if .Values.secret.existingSecretName }}
+        - name: persisted-identity
+          secret:
+            secretName: {{ .Values.secret.existingSecretName }}
+            defaultMode: 0444
+            items:
+            - key: {{ .Values.secret.keyName | default "persisted-identity" | quote }}
+              path: {{ include "zt-host.fullname" . }}-identity.json
+        {{- else }}
+        - name: persisted-identity
+          persistentVolumeClaim:
+            claimName: {{ include "zt-host.fullname" . }}-identity-pvc
+        {{- end }}
+        {{- if .Values.spireAgent.enabled }}
+        - name: spire-agent-socket
+          hostPath:
+            path: {{ .Values.spireAgent.spireSocketMnt }}
+            type: Directory
+        {{- end }}
+        {{- range .Values.additionalVolumes }}
+        - name: {{ .name }}
+          {{- if eq .volumeType "secret" }}
+          secret:
+            secretName: {{ .secretName }}
+          {{- else if eq .volumeType "configMap" }}
+          configMap:
+            name: {{ .configMapName }}
+          {{- else if eq .volumeType "emptyDir" }}
+          emptyDir: {}
+          {{- end }}
+        {{- end }}

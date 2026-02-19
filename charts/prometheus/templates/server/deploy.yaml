@@ -59,9 +59,9 @@ spec:
           args:
             - --volume-dir=/etc/config
             - --webhook-url={{ .Values.configmapReload.webhookUrl }}
-            - --ziti.identity.file={{ .Values.configmapReload.ziti.identityFile }}
-            - --ziti.service={{ .Values.configmapReload.ziti.targetService }}
-            - --ziti.target.identity={{ .Values.configmapReload.ziti.targetIdentity }}
+            - --zt.identity.file={{ .Values.configmapReload.zt.identityFile }}
+            - --zt.service={{ .Values.configmapReload.zt.targetService }}
+            - --zt.target.identity={{ .Values.configmapReload.zt.targetIdentity }}
           {{- range $key, $value := .Values.configmapReload.prometheus.extraArgs }}
             - --{{ $key }}={{ $value }}
           {{- end }}
@@ -80,10 +80,10 @@ spec:
               subPath: {{ .subPath }}
               readOnly: {{ .readOnly }}
           {{- end }}
-          {{- if .Values.server.ziti.enabled }}
+          {{- if .Values.server.zt.enabled }}
             - name: configmap-reloadz-identity-vol
-              mountPath: /run/secrets/ziti.identity.json
-              subPath: ziti.identity.json
+              mountPath: /run/secrets/zt.identity.json
+              subPath: zt.identity.json
           {{- end }}
         {{- end }}
 
@@ -91,13 +91,13 @@ spec:
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
           imagePullPolicy: "{{ .Values.server.image.pullPolicy }}"
           env:
-            {{- if .Values.server.ziti.enabled }}
+            {{- if .Values.server.zt.enabled }}
             - name: "ZITI_LISTENER_SERVICE_NAME"
-              value: "{{ .Values.server.ziti.service }}"
+              value: "{{ .Values.server.zt.service }}"
             - name: "ZITI_LISTENER_IDENTITY_NAME"
-              value: "{{ .Values.server.ziti.identity }}"
+              value: "{{ .Values.server.zt.identity }}"
             - name: "ZITI_LISTENER_IDENTITY_FILE"
-              value: "{{ .Values.server.ziti.path }}"
+              value: "{{ .Values.server.zt.path }}"
             {{- end }}
           {{- if .Values.server.env }}
 {{ toYaml .Values.server.env | indent 12}}
@@ -199,7 +199,7 @@ spec:
           resources:
 {{ toYaml .Values.server.resources | indent 12 }}            
           volumeMounts:
-            {{- if .Values.server.ziti.enabled }}
+            {{- if .Values.server.zt.enabled }}
             - name: prometheus-server-identity-vol
               mountPath: /etc/prometheus/prometheus.json
               subPath: prometheus.json
@@ -279,7 +279,7 @@ spec:
     {{- end }}
       terminationGracePeriodSeconds: {{ .Values.server.terminationGracePeriodSeconds }}
       volumes:
-        {{- if .Values.server.ziti.enabled }}
+        {{- if .Values.server.zt.enabled }}
         - name: prometheus-server-identity-vol
           secret:
             secretName: prometheus-server-identity-secret
@@ -293,7 +293,7 @@ spec:
             defaultMode: 0400
             items:
               - key: zid
-                path: ziti.identity.json
+                path: zt.identity.json
         {{- end }}
         {{- if .Values.server.scrape.id }}
         - name: prometheus-scrape-identity-vol

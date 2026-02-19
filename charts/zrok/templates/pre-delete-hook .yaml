@@ -34,35 +34,35 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: ZITI_MGMT_API
-              value: {{ .Values.ziti.advertisedHost }}:{{ .Values.ziti.advertisedPort }}
+              value: {{ .Values.zt.advertisedHost }}:{{ .Values.zt.advertisedPort }}
             - name: ZITI_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name:  {{ include "zrok.fullname" . }}-ziti-mgmt-secret
+                  name:  {{ include "zrok.fullname" . }}-zt-mgmt-secret
                   key: admin-username
             - name: ZITI_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name:  {{ include "zrok.fullname" . }}-ziti-mgmt-secret
+                  name:  {{ include "zrok.fullname" . }}-zt-mgmt-secret
                   key: admin-password
-            # this is needed for ziti CLI to work because it assumes a writable config dir
+            # this is needed for zt CLI to work because it assumes a writable config dir
             - name: HOME
               value: /tmp
           volumeMounts:
             - name: zrok-frontend-config
               mountPath: /usr/local/bin/unbootstrap.bash
               subPath: unbootstrap.bash
-            # used by ziti CLI in zitiLogin
+            # used by zt CLI in ztLogin
             - name: zrok-controller-config
               mountPath: /etc/zrok
               readOnly: true
-            - name: ziti-ctrl-plane-cas
-              mountPath: {{ .Values.ziti.ca_cert_dir }}/{{ .Values.ziti.ca_cert_file }}
-              subPath: {{ .Values.ziti.ca_cert_file }}
+            - name: zt-ctrl-plane-cas
+              mountPath: {{ .Values.zt.ca_cert_dir }}/{{ .Values.zt.ca_cert_file }}
+              subPath: {{ .Values.zt.ca_cert_file }}
               readOnly: true
-            - mountPath: /usr/local/bin/zitiLogin
+            - mountPath: /usr/local/bin/ztLogin
               name: zrok-frontend-config
-              subPath: zitiLogin
+              subPath: ztLogin
           command: ["unbootstrap.bash"]
           # command: ["sh", "-c", "while true; do sleep 86400; done"]
       {{- with .Values.affinity }}
@@ -81,8 +81,8 @@ spec:
               - key: unbootstrap.bash
                 path: unbootstrap.bash
                 mode: 0555
-              - key: zitiLogin
-                path: zitiLogin
+              - key: ztLogin
+                path: ztLogin
                 mode: 0555
         - name: zrok-controller-config
           configMap:
@@ -91,10 +91,10 @@ spec:
             items:
               - key: ctrl.yaml
                 path: ctrl.yaml
-        - name: ziti-ctrl-plane-cas
+        - name: zt-ctrl-plane-cas
           configMap:
-            name: {{ .Values.ziti.ca_cert_configmap }}
+            name: {{ .Values.zt.ca_cert_configmap }}
             defaultMode: 0444
             items:
-              - key: {{ .Values.ziti.ca_cert_file }}
-                path: {{ .Values.ziti.ca_cert_file }}
+              - key: {{ .Values.zt.ca_cert_file }}
+                path: {{ .Values.zt.ca_cert_file }}

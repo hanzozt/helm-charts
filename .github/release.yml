@@ -7,22 +7,22 @@ changelog:
   categories:
     - title: Controller Changes
       labels:
-        - notes:ziti-controller
+        - notes:zt-controller
     - title: Router Changes
       labels:
-        - notes:ziti-router
+        - notes:zt-router
     - title: Tunneler Daemonset Changes
       labels:
-        - notes:ziti-edge-tunnel
+        - notes:zt-edge-tunnel
     - title: Hosting Pod Changes
       labels:
-        - notes:ziti-host
+        - notes:zt-host
     - title: zrok Changes
       labels:
         - notes:zrok
     - title: BrowZer Bootstrapper Changes
       labels:
-        - notes:ziti-browzer-bootstrapper
+        - notes:zt-browzer-bootstrapper
     - title: Other Changes
       labels:
         - "*"

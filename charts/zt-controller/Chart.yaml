@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: 1.7.2
+description: Host an Hanzo ZT controller in Kubernetes
+name: zt-controller
+type: application
+version: 3.1.0

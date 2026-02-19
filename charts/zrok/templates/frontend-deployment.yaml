@@ -43,18 +43,18 @@ spec:
             - name: ZROK_API_ENDPOINT
               value: http://{{ include "zrok.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.controller.service.advertisedPort }}
             - name: ZITI_MGMT_API
-              value: {{ .Values.ziti.advertisedHost }}:{{ .Values.ziti.advertisedPort }}
+              value: {{ .Values.zt.advertisedHost }}:{{ .Values.zt.advertisedPort }}
             - name: ZITI_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name:  {{ include "zrok.fullname" . }}-ziti-mgmt-secret
+                  name:  {{ include "zrok.fullname" . }}-zt-mgmt-secret
                   key: admin-username
             - name: ZITI_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name:  {{ include "zrok.fullname" . }}-ziti-mgmt-secret
+                  name:  {{ include "zrok.fullname" . }}-zt-mgmt-secret
                   key: admin-password
-            # this is needed for ziti CLI to work because it assumes a writable config dir
+            # this is needed for zt CLI to work because it assumes a writable config dir
             - name: HOME
               value: /tmp
           volumeMounts:
@@ -66,21 +66,21 @@ spec:
               mountPath: /usr/local/bin/bootstrap-frontend.bash
               readOnly: true
               subPath: bootstrap-frontend.bash
-            # used by ziti CLI in bootstrap-frontend.bash
-            - name: ziti-ctrl-plane-cas
-              mountPath: {{ .Values.ziti.ca_cert_dir }}/{{ .Values.ziti.ca_cert_file }}
-              subPath: {{ .Values.ziti.ca_cert_file }}
+            # used by zt CLI in bootstrap-frontend.bash
+            - name: zt-ctrl-plane-cas
+              mountPath: {{ .Values.zt.ca_cert_dir }}/{{ .Values.zt.ca_cert_file }}
+              subPath: {{ .Values.zt.ca_cert_file }}
               readOnly: true
             - name: frontend-config
-              mountPath: /usr/local/bin/zitiLogin
-              subPath: zitiLogin
+              mountPath: /usr/local/bin/ztLogin
+              subPath: ztLogin
       containers:
         - name: {{ .Chart.Name }}-frontend
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # needs to read the frontend ziti identity secret which is mounted in $HOME/.zrok/identities
+          # needs to read the frontend zt identity secret which is mounted in $HOME/.zrok/identities
           args: ["access", "public", "/etc/zrok/frontend.yaml"]
           env:
             - name: ZROK_API_ENDPOINT
@@ -131,8 +131,8 @@ spec:
             items:
               - key: frontend.yaml
                 path: frontend.yaml
-              - key: zitiLogin
-                path: zitiLogin
+              - key: ztLogin
+                path: ztLogin
                 mode: 0555
         - name: bootstrap-frontend
           configMap:
@@ -141,13 +141,13 @@ spec:
             items:
               - key: bootstrap-frontend.bash
                 path: bootstrap-frontend.bash
-        - name: ziti-ctrl-plane-cas
+        - name: zt-ctrl-plane-cas
           configMap:
-            name: {{ .Values.ziti.ca_cert_configmap }}
+            name: {{ .Values.zt.ca_cert_configmap }}
             defaultMode: 0444
             items:
-              - key: {{ .Values.ziti.ca_cert_file }}
-                path: {{ .Values.ziti.ca_cert_file }}
+              - key: {{ .Values.zt.ca_cert_file }}
+                path: {{ .Values.zt.ca_cert_file }}
         - name: frontend-identity
           secret:
             secretName: {{ include "zrok.fullname" . }}-frontend-identity

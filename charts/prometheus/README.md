@@ -32,16 +32,16 @@ This Helm chart deploys Prometheus with embedded Ziti. Ziti solves the target re
 
 ## Overview
 
-The operation of this chart is described in [part 2 of the PrometheuZ tutorial](https://docs.hanzozt.dev/blog/zitification/prometheus/part2/#deploying-prometheuz-1).
+The operation of this chart is described in [part 2 of the PrometheuZ tutorial](https://docs.hanzozt.dev/blog/ztfication/prometheus/part2/#deploying-prometheuz-1).
 
 ```console
 helm install prometheuz ./charts/prometheus \
-     --set-file configmapReload.ziti.id.contents="/ziti/id/to/reload/prometheus/after/change.json" \
-     --set configmapReload.ziti.targetService="my.zitified.prometheus.svc" \
-     --set configmapReload.ziti.targetIdentity="hosting.ziti.identity" \
-     --set-file server.ziti.id.contents="/ziti/id/to/prometheus/ziti.id.json" \
-     --set server.ziti.service="my.zitified.prometheus.svc" \
-     --set server.ziti.identity="hosting.ziti.identity"
+     --set-file configmapReload.zt.id.contents="/zt/id/to/reload/prometheus/after/change.json" \
+     --set configmapReload.zt.targetService="my.ztfied.prometheus.svc" \
+     --set configmapReload.zt.targetIdentity="hosting.zt.identity" \
+     --set-file server.zt.id.contents="/zt/id/to/prometheus/zt.id.json" \
+     --set server.zt.service="my.ztfied.prometheus.svc" \
+     --set server.zt.identity="hosting.zt.identity"
 ```
 
 A Ziti identity for the Prometheus server is required as part of the deployment.
@@ -75,11 +75,11 @@ Create a YAML file that will contain your additional scrape targets. the YAML fi
 - job_name: 'job1'
   scrape_interval: 15s
   honor_labels: true
-  scheme: 'ziti'
+  scheme: 'zt'
   params:
   'match[]':
   - '{job!=""}'
-  'ziti-config':
+  'zt-config':
   - '/etc/prometheus/{identityFileName}.json'
   static_configs:
     - targets:
@@ -88,11 +88,11 @@ Create a YAML file that will contain your additional scrape targets. the YAML fi
 - job_name: 'job2'
   scrape_interval: 15s
   honor_labels: true
-  scheme: 'ziti'
+  scheme: 'zt'
   params:
   'match[]':
   - '{job!=""}'
-  'ziti-config':
+  'zt-config':
   - '/etc/prometheus/{prometheusIdentityName}.json'
 
   static_configs:
@@ -114,7 +114,7 @@ This method can also be used when updating scrape targets by running a helm upda
 Configuring the identity file
 -----------------------------
 
-The ziti identity json file must be provided during an install/upgrade in order to scrape ziti targets.
+The zt identity json file must be provided during an install/upgrade in order to scrape zt targets.
 This can be done by the use of the following argument,
 
 ```console
@@ -142,17 +142,17 @@ where myIdentity is the name of the identity. This will cause the identity file 
 
 Example Installation Command
 
-Assume that we have an identity file zitiPrometheus.json and we have a yaml file called zitiTargets.yaml which contains the following:
+Assume that we have an identity file ztPrometheus.json and we have a yaml file called ztTargets.yaml which contains the following:
 
 ```yaml
 - job_name: 'redis'
   scrape_interval: 15s
   honor_labels: true
-  scheme: 'ziti'
+  scheme: 'zt'
   params:
   'match[]':
   - '{job!=""}'
-  'ziti-config':
+  'zt-config':
   - '/etc/prometheus/prometheus.json'
   static_configs:
     - targets:
@@ -161,11 +161,11 @@ Assume that we have an identity file zitiPrometheus.json and we have a yaml file
 - job_name: 'traefik'
   scrape_interval: 15s
   honor_labels: true
-  scheme: 'ziti'
+  scheme: 'zt'
   params:
   'match[]':
   - '{job!=""}'
-  'ziti-config':
+  'zt-config':
   - '/etc/prometheus/prometheus.json'
 
   static_configs:
@@ -173,10 +173,10 @@ Assume that we have an identity file zitiPrometheus.json and we have a yaml file
         - 'traefikPrometheus-prometheus'
 ```
 
-The following command will allow us to install zitified prometheus:
+The following command will allow us to install ztfied prometheus:
 // TODO update once remote
 ```console
-helm install prometheus . --set-file prometheusIdentity=zitiPrometheus.json --set-file extraScrapeConfigs=zitiTargets.yaml
+helm install prometheus . --set-file prometheusIdentity=ztPrometheus.json --set-file extraScrapeConfigs=ztTargets.yaml
 ```
 
 **NOTE: since we did not provide an identityFileName the identity file is mounted as /etc/prometheus/prometheus.json by default
@@ -189,21 +189,21 @@ If we wanted to specify the identity file name to match the local identity file'
 
 to
 
-/etc/prometheus/zitiPrometheus.json
+/etc/prometheus/ztPrometheus.json
 
-in our zitiTargets.yaml file
+in our ztTargets.yaml file
 
 the helm command would then look like:
 
 ```console
-helm install prometheus . --set-file prometheusIdentity=zitiPrometheus.json --set-file extraScrapeConfigs=zitiTargets.yaml --set identityFileName=zitiPrometheus
+helm install prometheus . --set-file prometheusIdentity=ztPrometheus.json --set-file extraScrapeConfigs=ztTargets.yaml --set identityFileName=ztPrometheus
 ```
 
 --------------------
 Upgrading the Chart
 --------------------
 
-If we needed to add a new job to our zitiTargets we could either run
+If we needed to add a new job to our ztTargets we could either run
 
 ```console
 kubectl edit cm prometheus-server
@@ -214,7 +214,7 @@ to add the targets directly to the config map
 Otherwise, we would run the same command as we did earlier except run a upgrade instead of an install. So for the case where the identityFileName was set it would look like:
 
 ```console
-helm upgrade prometheus . --set-file prometheusIdentity=zitiPrometheus.json --set-file extraScrapeConfigs=zitiTargets.yaml --set identityFileName=zitiPrometheus
+helm upgrade prometheus . --set-file prometheusIdentity=ztPrometheus.json --set-file extraScrapeConfigs=ztTargets.yaml --set identityFileName=ztPrometheus
 kubectl scale deployment prometheus-server --replicas=0
 kubectl scale deployment prometheus-server --replicas=1
 ```
@@ -293,7 +293,7 @@ by scaling the deployment down and then up this will force a restart so that the
 | alertmanager.tolerations | list | `[]` |  |
 | alertmanager.useClusterRole | bool | `true` |  |
 | alertmanager.useExistingRole | bool | `false` |  |
-| alertmanager.zitified | bool | `false` |  |
+| alertmanager.ztfied | bool | `false` |  |
 | alertmanagerFiles."alertmanager.yml".global | object | `{}` |  |
 | alertmanagerFiles."alertmanager.yml".receivers[0].name | string | `"default-receiver"` |  |
 | alertmanagerFiles."alertmanager.yml".route.group_interval | string | `"5m"` |  |
@@ -319,7 +319,7 @@ by scaling the deployment down and then up this will force a restart so that the
 | configmapReload.prometheus.name | string | `"configmap-reload"` |  |
 | configmapReload.prometheus.resources | object | `{}` |  |
 | configmapReload.webhookUrl | string | `"http://127.0.0.1:9090/-/reload"` |  |
-| configmapReload.ziti.identityFile | string | `"/run/secrets/ziti.identity.json"` |  |
+| configmapReload.zt.identityFile | string | `"/run/secrets/zt.identity.json"` |  |
 | extraScrapeConfigs | string | `nil` |  |
 | forceNamespace | string | `nil` |  |
 | imagePullSecrets | string | `nil` |  |
@@ -514,10 +514,10 @@ by scaling the deployment down and then up this will force a restart so that the
 | server.terminationGracePeriodSeconds | int | `300` |  |
 | server.tolerations | list | `[]` |  |
 | server.verticalAutoscaler.enabled | bool | `false` |  |
-| server.ziti.enabled | bool | `true` |  |
-| server.ziti.identity | string | `"prometheus"` |  |
-| server.ziti.path | string | `"/etc/prometheus/prometheus.json"` |  |
-| server.ziti.service | string | `"prometheus.svc"` |  |
+| server.zt.enabled | bool | `true` |  |
+| server.zt.identity | string | `"prometheus"` |  |
+| server.zt.path | string | `"/etc/prometheus/prometheus.json"` |  |
+| server.zt.service | string | `"prometheus.svc"` |  |
 | serverFiles."alerting_rules.yml" | object | `{}` |  |
 | serverFiles."prometheus.yml".rule_files[0] | string | `"/etc/config/recording_rules.yml"` |  |
 | serverFiles."prometheus.yml".rule_files[1] | string | `"/etc/config/alerting_rules.yml"` |  |

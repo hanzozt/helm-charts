@@ -31,8 +31,8 @@ alertmanager:
   ## If false, alertmanager will not be installed
   ##
   enabled: false
-  zitified: false
-  # if zitified == true expect "--set-file alertmanager.ziti.id=/path/to/file
+  ztfied: false
+  # if ztfied == true expect "--set-file alertmanager.zt.id=/path/to/file
 
   ## Use a ClusterRole (and ClusterRoleBinding)
   ## - If set to false - we define a Role and RoleBinding in the defined namespaces ONLY
@@ -368,10 +368,10 @@ alertmanager:
 ##
 configmapReload:
   webhookUrl: "http://127.0.0.1:9090/-/reload"
-  # if zitified=true expect "--set-file configmapReload.ziti.id.contents=/path/to/file"
+  # if ztfied=true expect "--set-file configmapReload.zt.id.contents=/path/to/file"
 
-  ziti:
-    identityFile: "/run/secrets/ziti.identity.json"
+  zt:
+    identityFile: "/run/secrets/zt.identity.json"
     #service -- use --set to override. no default - required
     #targetIdentity -- use --set to override. no default - not required
   prometheus:
@@ -621,8 +621,8 @@ server:
   ##
   enabled: true
 
-  ## Settings for ziti
-  ziti:
+  ## Settings for zt
+  zt:
     enabled: true
     identity: "prometheus"
     service: "prometheus.svc"
@@ -1024,7 +1024,7 @@ server:
     periodSeconds: 5
     failureThreshold: 30
     timeoutSeconds: 10
-  # if using zitified listener - ensure this is set to false
+  # if using ztfied listener - ensure this is set to false
   readinessProbe:
     enabled: false
     
@@ -1402,7 +1402,7 @@ serverFiles:
       - /etc/config/alerts
 
     scrape_configs:
-      # uncomment if you don't want to run zitified and want to monitor itself
+      # uncomment if you don't want to run ztfied and want to monitor itself
       #- job_name: prometheus
       #  static_configs:
       #    - targets:

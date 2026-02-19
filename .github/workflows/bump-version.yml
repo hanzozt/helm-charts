@@ -12,12 +12,12 @@ jobs:
           - hello-toy
           - httpbin
           - reflect
-          - ziti-controller
-          - ziti-edge-tunnel
-          - ziti-host
-          - ziti-router
+          - zt-controller
+          - zt-edge-tunnel
+          - zt-host
+          - zt-router
           - zrok
-          - ziti-browzer-bootstrapper
+          - zt-browzer-bootstrapper
     runs-on: ubuntu-latest
     steps:
       - name: Bump Chart Versions if Changed

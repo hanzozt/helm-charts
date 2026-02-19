@@ -103,7 +103,7 @@
           {{- range $name, $config := .Values.ports }}
           {{- if $config }}
           {{- if eq $name "prometheuz" }}
-          - "--entryPoints.{{$name}}.address=ziti-{{ $config.serviceName }}-{{ $config.identityName }}:{{ $config.port }}/{{ default "tcp" $config.protocol | lower }}"
+          - "--entryPoints.{{$name}}.address=zt-{{ $config.serviceName }}-{{ $config.identityName }}:{{ $config.port }}/{{ default "tcp" $config.protocol | lower }}"
           {{- else }}
           - "--entryPoints.{{$name}}.address=:{{ $config.port }}/{{ default "tcp" $config.protocol | lower }}"
           {{- end }}

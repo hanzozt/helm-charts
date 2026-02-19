@@ -19,13 +19,13 @@ $ helm repo add hanzozt https://hanzozt.dev/helm-charts/
 
 These charts help cluster workloads access or provide a Ziti service.
 
-* [`ziti-host`](./charts/ziti-host/README.md): Ziti tunnel pod for hosting services (ingress only)
-* [`ziti-edge-tunnel`](./charts/ziti-edge-tunnel/README.md): Ziti tunnel daemonset for accessing services (intercept node egress)
+* [`zt-host`](./charts/zt-host/README.md): Ziti tunnel pod for hosting services (ingress only)
+* [`zt-edge-tunnel`](./charts/zt-edge-tunnel/README.md): Ziti tunnel daemonset for accessing services (intercept node egress)
 
 ### Charts for Self-Hosting Ziti
 
-* [`ziti-controller`](./charts/ziti-controller/README.md)
-* [`ziti-router`](./charts/ziti-router/README.md)
+* [`zt-controller`](./charts/zt-controller/README.md)
+* [`zt-router`](./charts/zt-router/README.md)
 
 ### Charts that Deploy a Ziti-enabled Application
 

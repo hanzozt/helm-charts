@@ -4,23 +4,23 @@
 
 replicaCount: 1
 
-# -- Ziti one-time enrollment token as JWT, you can send this or the enrolled identity in 'zitiIdentity'
-zitiEnrollment:
+# -- Ziti one-time enrollment token as JWT, you can send this or the enrolled identity in 'ztIdentity'
+ztEnrollment:
 
 # -- Ziti identity contents as JSON
-zitiIdentity:
+ztIdentity:
 
 # -- Ziti identity JSON as base64 encoding
-zitiIdentityBase64:
+ztIdentityBase64:
 
 image:
   repository: docker.io/hanzozt/go-httpbin
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
-zitiImage:
+ztImage:
   # -- container image for running life cycle hooks to manage the Ziti identity
-  repository: docker.io/hanzozt/ziti-cli
+  repository: docker.io/hanzozt/zt-cli
   # -- when to pull the container image
   pullPolicy: IfNotPresent
 
@@ -96,7 +96,7 @@ tolerations: []
 affinity: {}
 
 # -- exec by Helm post-install hook
-initScriptFile:   ziti-init.bash
+initScriptFile:   zt-init.bash
 # -- exec by Helm post-delete hook
 deleteIdentityScriptFile: delete-identity.bash
 

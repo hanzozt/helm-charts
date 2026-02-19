@@ -1,0 +1,25 @@
+edge:
+  additionalListeners:
+    - name: ""  # router1-wss
+      protocol: wss
+      containerPort: 3023
+      advertisedHost: ""  # router1.zt.example.com
+      advertisedPort: 443
+      service:
+        enabled: true
+        type: ClusterIP
+      ingress:
+        enabled: true
+        annotations: {}  # annotate as per ingress controller to enable ssl passthrough
+        ingressClassName: ""
+
+identity:
+  altServerCerts:
+    - mode: certManager
+      secretName: zt-router-alt-server-cert1
+      additionalListenerName: ""  # router1-wss
+      mountPath: /etc/zt/zt-router-alt-server-cert1
+      issuerRef:
+        group: cert-manager.io
+        kind: ClusterIssuer  # ClusterIssuer or Issuer
+        name: ""  # cloudflare-dns01-issuer-prod

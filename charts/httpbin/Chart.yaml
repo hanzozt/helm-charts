@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 2.18.3-ziti
+appVersion: 2.18.3-zt
 description: Run the Ziti fork of go-httpbin
 name: httpbin
 type: application
